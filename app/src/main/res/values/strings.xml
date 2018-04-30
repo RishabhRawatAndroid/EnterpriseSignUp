@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Totality Corporation</string>
+    <string name="setting">Setting</string>
+    <string name="login">Login</string>
+    <string name="usernameoremail">UserName/Email</string>
+    <string name="password">Password</string>
+    <string name="forgetpassword">Forget Password ?</string>
+    <string name="signup">Not a member? Sign Up Now</string>
+    <string name="signupact">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="email">Email id</string>
+    <string name="retypepassword">Retype Password</string>
+    <string name="mobileno">Mobile No</string>
+    <string name="haveaccount">Does have an account? Sign In</string>
+</resources>

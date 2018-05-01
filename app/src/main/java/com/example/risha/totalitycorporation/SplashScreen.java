@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -24,6 +25,7 @@ public class SplashScreen extends AppCompatActivity {
     private ConstraintLayout layout;
     private UserSharedPreference userSharedPrefrence;
     private ProgressBar progressBar;
+    private String TAG="RISHABH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,8 @@ public class SplashScreen extends AppCompatActivity {
         statusbar.setSystemUiVisibility(ui);
 
         //hiding the action  bar
-        actionBar=getSupportActionBar();
-        actionBar.hide();
+//        actionBar=this.getSupportActionBar();
+//        actionBar.hide();
 
         //new activity open
         activityopen();
@@ -55,12 +57,22 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Log.d(TAG,"Start the 3 second delay");
                     Thread.sleep(3000);
+                    //after the 3 second delay the login activity open
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG,"run on ui thread");
+                            startActivity(new Intent(SplashScreen.this,LoginActivity.class));
+                            overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+                        }
+                    });
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        }).start();
     }
 
     //this method check that user is online or not while opening the app
@@ -75,19 +87,22 @@ public class SplashScreen extends AppCompatActivity {
     {
             if(!userSharedPrefrence.isFirst_time_open())
             {
+                Log.d(TAG,"Enter in sharedpreference");
                 if(isOnline())
                 {
+                    Log.d(TAG,"APP is online");
                     delay();
-                    startActivity(new Intent(SplashScreen.this,LoginActivity.class));
                 }
                 else
                 {
+                    Log.d(TAG,"App is not online");
                     progressBar.setVisibility(View.INVISIBLE);
                     Snackbar.make(layout,"No Network Connection Available :(",Snackbar.LENGTH_INDEFINITE).setAction(R.string.setting,new OpenSetting()).setActionTextColor(Color.RED).show();
                 }
             }
             else
             {
+                Log.d(TAG,"Stored in shared preference");
                 delay();
                 startActivity(new Intent(SplashScreen.this,MainActivity.class));
             }
@@ -98,12 +113,14 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG,"on start method");
         activityopen();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG,"on resume method");
         activityopen();
     }
 }

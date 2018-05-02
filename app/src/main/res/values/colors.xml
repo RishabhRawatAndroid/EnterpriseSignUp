@@ -11,5 +11,7 @@
     <color name="dimgray">#696969</color>
     <color name="forest_green">#228B22</color>
     <color name="red">#FF0000</color>
+    <color name="skyblue">#3a9fe5</color>
+    <color name="facebookcolor">#3B5998</color>
 
 </resources>

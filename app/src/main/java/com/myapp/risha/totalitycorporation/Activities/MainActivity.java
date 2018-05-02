@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -116,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());
             profileno.setText(preference.getPhoneno());
+        }
+
+        else if(preference.isGooglesign())
+        {
+            Glide.with(MainActivity.this).load(preference.getPhotourl()).into(profileimage);
+            profilename.setText(preference.getName());
+            profilemail.setText(preference.getEmail());
+
         }
 
 

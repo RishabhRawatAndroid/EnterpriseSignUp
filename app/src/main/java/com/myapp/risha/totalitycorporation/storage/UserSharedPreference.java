@@ -15,7 +15,36 @@ public class UserSharedPreference {
     private boolean custom;
     private boolean savetocloud;
     private String loginemail;
+    private boolean googlesign;
+    private String photourl;
+    private boolean facebooksign;
 
+    public boolean isGooglesign() {
+        return preferences.getBoolean("googlesign",false);
+    }
+
+    public void setGooglesign(boolean googlesign) {
+        editor.putBoolean("googlesign",googlesign);
+        editor.commit();
+    }
+
+    public String getPhotourl() {
+        return preferences.getString("photourl",null);
+    }
+
+    public void setPhotourl(String photourl) {
+        editor.putString("photourl",photourl);
+        editor.commit();
+    }
+
+    public boolean isFacebooksign() {
+        return preferences.getBoolean("facebooksign",false);
+    }
+
+    public void setFacebooksign(boolean facebooksign) {
+        editor.putBoolean("facebooksign",facebooksign);
+        editor.commit();
+    }
 
     public UserSharedPreference(Context context)
     {

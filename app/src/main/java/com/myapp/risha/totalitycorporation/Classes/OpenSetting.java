@@ -1,4 +1,4 @@
-package com.example.risha.totalitycorporation.Classes;
+package com.myapp.risha.totalitycorporation.Classes;
 
 import android.content.Intent;
 import android.provider.Settings;

@@ -11,5 +11,9 @@
     <string name="email">Email id</string>
     <string name="retypepassword">Retype Password</string>
     <string name="mobileno">Mobile No</string>
+    <string name="passwordrecover">Password Recovery</string>
     <string name="haveaccount">Does have an account? Sign In</string>
+    <string name="recover">Recover Password</string>
+    <string name="gmail">Gmail Id</string>
+    <string name="logout">Log out</string>
 </resources>

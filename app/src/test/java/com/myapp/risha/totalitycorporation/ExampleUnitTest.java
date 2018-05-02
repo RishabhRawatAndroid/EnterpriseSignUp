@@ -1,4 +1,4 @@
-package com.example.risha.totalitycorporation;
+package com.myapp.risha.totalitycorporation;
 
 import org.junit.Test;
 

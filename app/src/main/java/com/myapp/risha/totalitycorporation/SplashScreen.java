@@ -1,4 +1,4 @@
-package com.example.risha.totalitycorporation;
+package com.myapp.risha.totalitycorporation;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,10 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.example.risha.totalitycorporation.Activities.LoginActivity;
-import com.example.risha.totalitycorporation.Activities.MainActivity;
-import com.example.risha.totalitycorporation.Classes.OpenSetting;
-import com.example.risha.totalitycorporation.storage.UserSharedPreference;
+import com.myapp.risha.totalitycorporation.Activities.LoginActivity;
+import com.myapp.risha.totalitycorporation.Activities.MainActivity;
+import com.myapp.risha.totalitycorporation.Classes.OpenSetting;
+import com.myapp.risha.totalitycorporation.storage.UserSharedPreference;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -78,9 +78,13 @@ public class SplashScreen extends AppCompatActivity {
     //this method check that user is online or not while opening the app
     private boolean isOnline()
     {
-        ConnectivityManager manager=(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager manager=(ConnectivityManager)this.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo info=manager.getActiveNetworkInfo();
-        return (info.isConnected() && info!=null);
+        if ( info != null && info.isConnectedOrConnecting()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private void activityopen()

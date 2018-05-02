@@ -10,5 +10,6 @@
     <color name="white">#fff</color>
     <color name="dimgray">#696969</color>
     <color name="forest_green">#228B22</color>
+    <color name="red">#FF0000</color>
 
 </resources>

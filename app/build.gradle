@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.risha.totalitycorporation"
+        applicationId "com.myapp.risha.totalitycorporation"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
@@ -28,4 +29,11 @@ dependencies {
 
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+
+    //firebase library for database and authentication
+    implementation 'com.google.firebase:firebase-core:15.0.0'
+    implementation 'com.google.firebase:firebase-database:15.0.0'
+    implementation 'com.google.firebase:firebase-auth:15.0.0'
+
 }
+apply plugin: 'com.google.gms.google-services'

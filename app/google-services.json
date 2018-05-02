@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "956140782869",
+    "firebase_url": "https://totallity-corporation.firebaseio.com",
+    "project_id": "totallity-corporation",
+    "storage_bucket": "totallity-corporation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956140782869:android:ef9b41ca4f8d0a7f",
+        "android_client_info": {
+          "package_name": "com.myapp.risha.totalitycorporation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956140782869-6gbh8s49dv6q8rps09ovfh34qftptt3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myapp.risha.totalitycorporation",
+            "certificate_hash": "9863e8b685574456a4b8ce7b1a3f8042e3db9144"
+          }
+        },
+        {
+          "client_id": "956140782869-jkdufi6j1ht2i8b6q3h5b1t7kcciv7ci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo1_4v9dk4fFnArfYRByrh0YvhFz1vX78"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956140782869-jkdufi6j1ht2i8b6q3h5b1t7kcciv7ci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

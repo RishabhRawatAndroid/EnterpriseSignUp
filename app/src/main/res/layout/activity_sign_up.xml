@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mylayout"
     tools:context=".Activities.SignUpActivity">
 
     <android.support.v7.widget.Toolbar
@@ -48,8 +49,11 @@
         android:drawablePadding="7dp"
         android:fontFamily="@font/quicksand"
         android:hint="@string/name"
+        android:singleLine="true"
         android:paddingLeft="7dp"
+        android:imeOptions="actionNext"
         android:textColorHint="@color/black"
+        android:nextFocusDown="@id/emailid"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -58,37 +62,42 @@
         app:layout_constraintVertical_bias="0.0"
         app:met_baseColor="@color/dimgray"
         app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/lime" />
+        app:met_primaryColor="@color/black" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/emailid"
         android:layout_width="341dp"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:imeOptions="actionNext"
         android:drawableLeft="@drawable/ic_mail_black_24dp"
         android:drawablePadding="7dp"
         android:textColorHint="@color/black"
         android:fontFamily="@font/quicksand"
         android:hint="@string/email"
+        android:nextFocusDown="@id/password1"
         android:paddingLeft="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
         app:met_baseColor="@color/dark_gray"
         app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/lime" />
+        app:met_primaryColor="@color/black" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/password1"
         android:layout_width="341dp"
+        android:singleLine="true"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:drawableLeft="@drawable/ic_lock_open_black_24dp"
         android:drawablePadding="7dp"
+        android:imeOptions="actionNext"
         android:fontFamily="@font/quicksand"
         android:hint="@string/password"
         android:paddingLeft="7dp"
@@ -98,16 +107,18 @@
         app:layout_constraintTop_toBottomOf="@+id/emailid"
         app:met_baseColor="@color/dark_gray"
         app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/lime"
+        app:met_primaryColor="@color/black"
         app:passwordToggleEnabled="true" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/password2"
         android:layout_width="341dp"
+        android:singleLine="true"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:imeOptions="actionNext"
         android:drawableLeft="@drawable/ic_lock_open_black_24dp"
         android:drawablePadding="7dp"
         android:fontFamily="@font/quicksand"
@@ -119,7 +130,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password1"
         app:met_baseColor="@color/dark_gray"
         app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/lime"
+        app:met_primaryColor="@color/black"
         app:passwordToggleEnabled="true" />
 
 
@@ -129,21 +140,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
+        android:singleLine="true"
         android:layout_marginTop="16dp"
         android:drawableLeft="@drawable/ic_local_phone_black_24dp"
         android:drawablePadding="7dp"
         android:fontFamily="@font/quicksand"
         android:hint="@string/mobileno"
         android:paddingLeft="7dp"
+        android:inputType="number"
+        android:maxLength="10"
+        android:digits="+0123456789"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password2"
         app:met_baseColor="@color/dark_gray"
         app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/lime" />
+        app:met_primaryColor="@color/black" />
 
     <Button
-        android:id="@+id/loginbtn"
+        android:id="@+id/signupbtn"
         android:layout_width="334dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
@@ -156,30 +172,34 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:onClick="SignUpUser"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone"
-        app:layout_constraintVertical_bias="0.096" />
+        app:layout_constraintVertical_bias="0.096"
+        tools:ignore="OnClick" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/signtextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/quicksand"
         android:text="@string/haveaccount"
         android:textColor="@color/forest_green"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signupbtn" />
 
 
     <CheckBox
-        android:id="@+id/checkbox1"
+        android:id="@+id/passcheck1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -188,15 +208,17 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="ShowpasswordCheckBox"
         android:button="@drawable/checkboxstyle"
         app:layout_constraintBottom_toBottomOf="@+id/password1"
         app:layout_constraintEnd_toEndOf="@+id/password1"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/password1"
-        app:layout_constraintTop_toTopOf="@+id/password1" />
+        app:layout_constraintTop_toTopOf="@+id/password1"
+        tools:ignore="OnClick" />
 
     <CheckBox
-        android:id="@+id/checkbox2"
+        android:id="@+id/passcheck2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -205,13 +227,34 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="ShowpasswordCheckBox"
         android:button="@drawable/checkboxstyle"
         app:layout_constraintBottom_toTopOf="@+id/phone"
         app:layout_constraintEnd_toEndOf="@+id/password2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/password2"
         app:layout_constraintTop_toBottomOf="@+id/password1"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="0.48"
+        tools:ignore="OnClick" />
+
+    <TextView
+        android:id="@+id/textValid"
+        android:layout_width="250dp"
+        android:layout_height="19dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+        app:layout_constraintVertical_bias="0.018" />
 
 
 </android.support.constraint.ConstraintLayout>

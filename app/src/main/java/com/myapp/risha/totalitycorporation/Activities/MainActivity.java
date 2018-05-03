@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -172,9 +173,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
+        else
+        {
+            //from facebook logout
+            LoginManager.getInstance().logOut();
+        }
         startActivity(new Intent(MainActivity.this,LoginActivity.class));
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
         finish();
+
 
 //        FirebaseAuth.AuthStateListener authStateListener=new FirebaseAuth.AuthStateListener() {
 //            @Override
@@ -193,4 +200,5 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        };
     }
+
 }

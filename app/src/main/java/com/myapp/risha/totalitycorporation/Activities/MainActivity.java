@@ -7,12 +7,17 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -23,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.myapp.risha.totalitycorporation.R;
 import com.myapp.risha.totalitycorporation.storage.UserSharedPreference;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private Button logoutbtn;
     private ProgressDialog progressDialog;
     private ConstraintLayout layout;
+    private GoogleSignInClient mGoogleSignInClient;
+    private String TAG="RISHABH MAIN";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,11 +130,18 @@ public class MainActivity extends AppCompatActivity {
 
         else if(preference.isGooglesign())
         {
-            Glide.with(MainActivity.this).load(preference.getPhotourl()).into(profileimage);
+            Picasso.get().load(preference.getPhotourl()).error(R.drawable.ggoogle).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage);
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());
 
         }
+        else if(preference.isFacebooksign())
+        {
+            Picasso.get().load(preference.getPhotourl()).error(R.drawable.com_facebook_favicon_blue).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage);
+            profilename.setText(preference.getName());
+            profilemail.setText(preference.getEmail());
+        }
+
 
 
 
@@ -133,8 +149,29 @@ public class MainActivity extends AppCompatActivity {
 
     public void LogOutUser(View view) {
 
-        FirebaseAuth.getInstance().signOut();
+        final UserSharedPreference preference=new UserSharedPreference(MainActivity.this);
+        if(preference.isCustom()) {
+            FirebaseAuth.getInstance().signOut();
+            Log.d(TAG,"firebase log out");
+        }
+        else if(preference.isGooglesign())
+        {
 
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+            mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            preference.setGooglesign(false);
+                            Log.d(TAG,"google account log out");
+                            Snackbar.make(layout,"Sign out account",Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+        }
         startActivity(new Intent(MainActivity.this,LoginActivity.class));
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
         finish();

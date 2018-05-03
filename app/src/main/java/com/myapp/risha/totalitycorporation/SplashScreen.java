@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Space;
 
 import com.myapp.risha.totalitycorporation.Activities.LoginActivity;
 import com.myapp.risha.totalitycorporation.Activities.MainActivity;
@@ -64,8 +65,16 @@ public class SplashScreen extends AppCompatActivity {
                         @Override
                         public void run() {
                             Log.d(TAG,"run on ui thread");
-                            startActivity(new Intent(SplashScreen.this,LoginActivity.class));
-                            overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+                            UserSharedPreference preference=new UserSharedPreference(SplashScreen.this);
+                            //if user already sign in with google account
+                            if(preference.isGooglesign() || preference.isFacebooksign())
+                            {
+                                startActivity(new Intent(SplashScreen.this,MainActivity.class));
+                            }
+                            else {
+                                startActivity(new Intent(SplashScreen.this, LoginActivity.class));
+                                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                            }
                         }
                     });
                 } catch (InterruptedException e) {

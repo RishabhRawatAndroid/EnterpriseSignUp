@@ -1,8 +1,11 @@
 package com.myapp.risha.totalitycorporation.Activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -15,6 +18,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -23,6 +27,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,6 +51,9 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.myapp.risha.totalitycorporation.R;
 import com.myapp.risha.totalitycorporation.storage.UserSharedPreference;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,13 +65,23 @@ public class LoginActivity extends AppCompatActivity {
     private TextView signup;
     private Button login;
     private Button googlesignin;
-    private Button facebooksignin;
+    private LoginButton facebooksignin;
     private TextView validation;
     private ConstraintLayout layout;
     private static final int GOOGLE_SIGN_IN=255;
 
+    //custom sign in approach
     private FirebaseAuth firebaseAuth;
+
+    //google sign in approach
     private GoogleSignInClient client;
+
+    //facebook sign in approach
+    private CallbackManager manager;
+    private AccessTokenTracker tracker;
+    private ProfileTracker profileTracker;
+    private FacebookCallback<LoginResult> facebookCallback;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +98,15 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//
+//        client = GoogleSignIn.getClient(this, gso);
 
-        client = GoogleSignIn.getClient(this, gso);
+
+
 
         //all the view which present in the activity login screen
         username = findViewById(R.id.username);
@@ -190,6 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                     UserSharedPreference preference=new UserSharedPreference(LoginActivity.this);
                     preference.setLoginemail(email);
                     preference.setSavetocloud(true);
+
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     finish();
@@ -217,6 +247,8 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == GOOGLE_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        } else {
+            manager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -238,6 +270,7 @@ public class LoginActivity extends AppCompatActivity {
                 preference.setPhoneno(personPhoto);
                 preference.setGooglesign(true);
 
+
                 FirebaseUser user=firebaseAuth.getCurrentUser();
                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
@@ -252,7 +285,87 @@ public class LoginActivity extends AppCompatActivity {
 
     public void Googlesignin(View view) {
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        client = GoogleSignIn.getClient(this, gso);
+
         Intent signInIntent = client.getSignInIntent();
         startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
+    }
+
+    public void FacebookLogin(View view) {
+
+        manager=CallbackManager.Factory.create();
+
+        tracker=new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+
+            }
+        };
+
+        profileTracker=new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                showfacebookprofile(currentProfile);
+            }
+        };
+
+        tracker.startTracking();
+        profileTracker.startTracking();
+
+        facebookCallback=new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                AccessToken token=loginResult.getAccessToken();
+                Profile profile=Profile.getCurrentProfile();
+                showfacebookprofile(profile);
+
+                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        };
+
+           facebooksignin.setReadPermissions("email");
+           facebooksignin.registerCallback(manager,facebookCallback);
+
+    }
+
+    private void showfacebookprofile(Profile currentProfile) {
+        if(currentProfile!=null)
+        {
+            String id=currentProfile.getId();
+            UserSharedPreference preference=new UserSharedPreference(this);
+            preference.setName(currentProfile.getName());
+            preference.setEmail(currentProfile.getId());
+            preference.setPhoneno("");
+
+            preference.setPhotourl(currentProfile.getProfilePictureUri(300,300).toString());
+            Log.d("RISHABH",currentProfile.getLinkUri().toString());
+            Log.d("RISHABH",currentProfile.getProfilePictureUri(300,300).toString());
+            preference.setFacebooksign(true);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(tracker!=null && profileTracker!=null)
+        {
+            tracker.stopTracking();
+            profileTracker.stopTracking();
+        }
     }
 }

@@ -16,4 +16,6 @@
     <string name="recover">Recover Password</string>
     <string name="gmail">Gmail Id</string>
     <string name="logout">Log out</string>
+    <string name="facebook_app_id">1872717289426499</string>
+    <string name="fb_login_protocol_scheme">fb1872717289426499</string>
 </resources>

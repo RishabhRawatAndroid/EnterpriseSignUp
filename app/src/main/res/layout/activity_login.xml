@@ -188,7 +188,6 @@
         android:paddingLeft="30dp"
         android:paddingTop="17dp"
         android:paddingBottom="17dp"
-        android:onClick="FacebookLogin"
         android:drawableLeft="@drawable/fbimg"
         android:textColor="@color/white"
         android:theme="@style/FacebookLoginButton"
@@ -197,8 +196,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/google"
-        tools:ignore="OnClick" />
+        app:layout_constraintTop_toBottomOf="@+id/google"/>
 
     <TextView
         android:id="@+id/signup"

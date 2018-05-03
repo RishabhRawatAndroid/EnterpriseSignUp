@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (preference.isSavetocloud() && !preference.isCustom())
         {
-
+           Log.d("RISHABH MAIN","FIRST IF ELSE");
             progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.setTitle("Fetching from the server");
             progressDialog.setCancelable(false);
@@ -118,12 +118,14 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(!preference.isSavetocloud() && preference.isCustom())
         {
+            Log.d("RISHABH MAIN","Second IF ELSE");
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());
             profileno.setText(preference.getPhoneno());
         }
         else if(preference.isSavetocloud() && preference.isCustom())
         {
+            Log.d("RISHABH MAIN","third IF ELSE");
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());
             profileno.setText(preference.getPhoneno());
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
         else if(preference.isGooglesign())
         {
+            Log.d("RISHABH MAIN","Fourth IF ELSE");
             Picasso.get().load(preference.getPhotourl()).error(R.drawable.ggoogle).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage);
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());
@@ -138,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(preference.isFacebooksign())
         {
+            Log.d("RISHABH MAIN","FIfth IF ELSE");
             Picasso.get().load(preference.getPhotourl()).error(R.drawable.com_facebook_favicon_blue).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage);
+            Log.d("RISHABH FB",preference.getPhotourl());
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());
         }
@@ -152,6 +157,11 @@ public class MainActivity extends AppCompatActivity {
 
         final UserSharedPreference preference=new UserSharedPreference(MainActivity.this);
         if(preference.isCustom()) {
+            preference.setFirst_time_open(false);
+            preference.setFacebooksign(false);
+            preference.setGooglesign(false);
+            preference.setSavetocloud(false);
+            preference.setCustom(false);
             FirebaseAuth.getInstance().signOut();
             Log.d(TAG,"firebase log out");
         }
@@ -177,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         {
             //from facebook logout
             LoginManager.getInstance().logOut();
+            Log.d("RISHABH","FAcebook logout");
         }
         startActivity(new Intent(MainActivity.this,LoginActivity.class));
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);

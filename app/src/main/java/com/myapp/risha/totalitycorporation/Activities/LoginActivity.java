@@ -167,6 +167,56 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+        facebooksignin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                manager=CallbackManager.Factory.create();
+
+                tracker=new AccessTokenTracker() {
+                    @Override
+                    protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+
+                    }
+                };
+
+                profileTracker=new ProfileTracker() {
+                    @Override
+                    protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                        showfacebookprofile(currentProfile);
+                    }
+                };
+
+                tracker.startTracking();
+                profileTracker.startTracking();
+
+                facebookCallback=new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        AccessToken token=loginResult.getAccessToken();
+                        Profile profile=Profile.getCurrentProfile();
+                        showfacebookprofile(profile);
+
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                };
+
+                facebooksignin.setReadPermissions("email");
+                facebooksignin.registerCallback(manager,facebookCallback);
+
+            }
+        });
+
 
     }
 
@@ -229,9 +279,9 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
 
                             if (task.isSuccessful()) {
-                                Snackbar.make(layout, "Your password is Wrong", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(layout, "Your password or Email may be Wrong", Snackbar.LENGTH_LONG).show();
                             } else {
-                                Snackbar.make(layout, "Your email is Wrong", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(layout, "No internet connection :<", Snackbar.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -257,17 +307,14 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
             if (acct != null) {
                 String personName = acct.getDisplayName();
-                String personGivenName = acct.getGivenName();
                 String personEmail = acct.getEmail();
                 String personPhoto = acct.getPhotoUrl().toString();
 
-                Toast.makeText(this,personPhoto,Toast.LENGTH_LONG).show();
-                Log.d("RISHABH",personPhoto);
+                Log.d("RISHABH Google photo",personPhoto);
                 UserSharedPreference preference=new UserSharedPreference(this);
                 preference.setEmail(personEmail);
                 preference.setName(personName);
                 preference.setPhotourl(personPhoto);
-                preference.setPhoneno(personPhoto);
                 preference.setGooglesign(true);
 
 
@@ -296,52 +343,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
     }
 
-    public void FacebookLogin(View view) {
-
-        manager=CallbackManager.Factory.create();
-
-        tracker=new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-
-            }
-        };
-
-        profileTracker=new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                showfacebookprofile(currentProfile);
-            }
-        };
-
-        tracker.startTracking();
-        profileTracker.startTracking();
-
-        facebookCallback=new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                AccessToken token=loginResult.getAccessToken();
-                Profile profile=Profile.getCurrentProfile();
-                showfacebookprofile(profile);
-
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        };
-
-           facebooksignin.setReadPermissions("email");
-           facebooksignin.registerCallback(manager,facebookCallback);
-
-    }
 
     private void showfacebookprofile(Profile currentProfile) {
         if(currentProfile!=null)
@@ -349,9 +350,9 @@ public class LoginActivity extends AppCompatActivity {
             String id=currentProfile.getId();
             UserSharedPreference preference=new UserSharedPreference(this);
             preference.setName(currentProfile.getName());
-            preference.setEmail(currentProfile.getId());
+            preference.setEmail("ID :"+currentProfile.getId());
             preference.setPhoneno("");
-
+            Log.d("RISHABH",currentProfile.getProfilePictureUri(300,300).toString());
             preference.setPhotourl(currentProfile.getProfilePictureUri(300,300).toString());
             Log.d("RISHABH",currentProfile.getLinkUri().toString());
             Log.d("RISHABH",currentProfile.getProfilePictureUri(300,300).toString());

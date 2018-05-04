@@ -31,8 +31,6 @@ public class ProfileProviderHelper {
 
     public boolean delete(String id)
     {
-       // long idDeleted = context.getContentResolver().delete(ProfileProvider.CONTENT_URI,"id = ? ", new String[]{id});
-
         long idDeleted = context.getContentResolver().delete(ProfileProvider.CONTENT_URI,null,null);
         getContacts();
         if(idDeleted>0)

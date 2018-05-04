@@ -64,10 +64,6 @@ public class ProfileProvider extends ContentProvider {
     {
 
     }
-//    public ProfileProvider(Context context) {
-//        this.context=context;
-//        databasehelperclass=new DatabaseHelperClass(context);
-//    }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
@@ -181,61 +177,6 @@ public class ProfileProvider extends ContentProvider {
             onCreate(db);
         }
     }
-
-
-//    public ProfileProvider opendatabase() throws SQLException
-//    {
-//        sqLiteDatabase=databasehelperclass.getWritableDatabase();
-//        return this;
-//    }
-//
-//    public void closedatabase()
-//    {
-//        databasehelperclass.close();
-//    }
-
-    public long InsertData(String name,String email,String phoneno,String image,String cloud,String google,String facebook)
-    {
-        //when we inserting data in the sqlite database we use a ContentValue class
-        ContentValues values=new ContentValues();
-        //values.put("ID",count);
-        values.put("NAME",name);
-        values.put("EMAIL",email);
-        values.put("PHONENO",phoneno);
-        values.put("IMAGE",image);
-        values.put("CLOUD",cloud);
-        values.put("GOOGLE",google);
-        values.put("FACEBOOK",facebook);
-        //if some occur are found then it return -1
-        return sqLiteDatabase.insertOrThrow(DATABASE_TABLE,null,values);
-    }
-
-//    //Delete a particular data
-//    public Boolean DeleteParticularData(int id)
-//    {
-//        return sqLiteDatabase.delete(DATABASE_TABLE,ID+"="+id,null)>0;
-//    }
-//
-//    public Cursor RetriveParticularContact(int Phone)
-//    {
-//        Cursor cursor=sqLiteDatabase.query(true,DATABASE_TABLE,new String[]{NAME,EMAIL,PHONENO,IMAGE,CLOUD,GOOGLE,FACEBOOK},Phone+"="+Phone,null,null,null,null,null);
-//        return cursor;
-//    }
-//
-//    //Updating the data
-//    public boolean updateContact(String id,String name, String email,String phoneno,String image,String cloud,String google,String facebook)
-//    {
-//        ContentValues args = new ContentValues();
-//        args.put(NAME, name);
-//        args.put(EMAIL, email);
-//        args.put(PHONENO,phoneno);
-//        args.put(IMAGE,image);
-//        args.put(CLOUD,cloud);
-//        args.put(GOOGLE,google);
-//        args.put(FACEBOOK,facebook);
-//        return sqLiteDatabase.update(DATABASE_TABLE, args, ID + "=" + id, null) > 0;
-//    }
-
 
 }
 

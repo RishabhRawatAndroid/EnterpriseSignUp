@@ -110,7 +110,7 @@ public class SplashScreen extends AppCompatActivity {
                 {
                     Log.d(TAG,"App is not online");
                     progressBar.setVisibility(View.INVISIBLE);
-                    Snackbar.make(layout,"No Network Connection Available :(",Snackbar.LENGTH_INDEFINITE).setAction(R.string.setting,new OpenSetting()).setActionTextColor(Color.RED).show();
+                    Snackbar.make(layout,"No Internet Connection Available :(",Snackbar.LENGTH_INDEFINITE).setAction(R.string.setting,new OpenSetting()).setActionTextColor(Color.RED).show();
                 }
             }
             else

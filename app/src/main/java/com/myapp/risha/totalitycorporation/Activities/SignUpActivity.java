@@ -1,6 +1,7 @@
 package com.myapp.risha.totalitycorporation.Activities;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,12 +29,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.myapp.risha.totalitycorporation.Classes.ProfileProviderHelper;
 import com.myapp.risha.totalitycorporation.R;
 import com.myapp.risha.totalitycorporation.storage.UserSharedPreference;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.CLOUD;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.EMAIL;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.FACEBOOK;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.GOOGLE;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.IMAGE;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.NAME;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.PHONENO;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -74,7 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
@@ -185,7 +195,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 createaccount(uemail, upass1, uname, uphone);
             } else {
-                showdialog("Warning!", "your password not match or password length not above 6 character");
+                showdialog("Warning!", "Your both password not match or password length not less than 6 character");
             }
         }
 
@@ -244,6 +254,21 @@ public class SignUpActivity extends AppCompatActivity {
                             preference.setPhoneno(usernum);
                             preference.setCustom(true);
                             preference.setSavetocloud(true);
+
+                            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            ProfileProviderHelper helper=new ProfileProviderHelper(SignUpActivity.this);
+                            ContentValues args = new ContentValues();
+                            args.put(NAME, username);
+                            args.put(EMAIL,useremail);
+                            args.put(PHONENO,usernum);
+                            args.put(IMAGE,"");
+                            args.put(CLOUD,"1");
+                            args.put(GOOGLE,"0");
+                            args.put(FACEBOOK,"0");
+                            helper.insert(args);
+                            helper.getContacts();
+
+
 
                             //also saving the info into firebase database
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("USER");

@@ -1,5 +1,6 @@
 package com.myapp.risha.totalitycorporation.Activities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,14 +49,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.myapp.risha.totalitycorporation.Classes.OpenSetting;
+import com.myapp.risha.totalitycorporation.Classes.ProfileProviderHelper;
 import com.myapp.risha.totalitycorporation.R;
+import com.myapp.risha.totalitycorporation.storage.ProfileProvider;
 import com.myapp.risha.totalitycorporation.storage.UserSharedPreference;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
-import java.util.Map;
-import java.util.Set;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.CLOUD;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.EMAIL;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.FACEBOOK;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.GOOGLE;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.IMAGE;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.NAME;
+import static com.myapp.risha.totalitycorporation.storage.ProfileProvider.PHONENO;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -97,15 +104,6 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             finish();
         }
-
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-//
-//        client = GoogleSignIn.getClient(this, gso);
-
-
 
 
         //all the view which present in the activity login screen
@@ -193,7 +191,6 @@ public class LoginActivity extends AppCompatActivity {
                 facebookCallback=new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        AccessToken token=loginResult.getAccessToken();
                         Profile profile=Profile.getCurrentProfile();
                         showfacebookprofile(profile);
 
@@ -202,12 +199,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
-
+                        Snackbar.make(layout,"You cancel the facebook login",Snackbar.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(FacebookException error) {
-
+                        Snackbar.make(layout,"No Network Connection Available or No Facebook Account :(",Snackbar.LENGTH_LONG).setAction(R.string.setting,new OpenSetting()).setActionTextColor(Color.RED).show();
                     }
                 };
 
@@ -269,7 +266,6 @@ public class LoginActivity extends AppCompatActivity {
                     UserSharedPreference preference=new UserSharedPreference(LoginActivity.this);
                     preference.setLoginemail(email);
                     preference.setSavetocloud(true);
-
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     finish();
@@ -281,7 +277,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Snackbar.make(layout, "Your password or Email may be Wrong", Snackbar.LENGTH_LONG).show();
                             } else {
-                                Snackbar.make(layout, "No internet connection :<", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(layout,"No Network Connection Available :(",Snackbar.LENGTH_LONG).setAction(R.string.setting,new OpenSetting()).setActionTextColor(Color.RED).show();
                             }
                         }
                     });
@@ -317,6 +313,9 @@ public class LoginActivity extends AppCompatActivity {
                 preference.setPhotourl(personPhoto);
                 preference.setGooglesign(true);
 
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                savetosqlite(personName,personEmail,"",personPhoto,"0","1","0");
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 FirebaseUser user=firebaseAuth.getCurrentUser();
                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
@@ -357,6 +356,10 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("RISHABH",currentProfile.getLinkUri().toString());
             Log.d("RISHABH",currentProfile.getProfilePictureUri(300,300).toString());
             preference.setFacebooksign(true);
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            savetosqlite(currentProfile.getName(),"",currentProfile.getId(),currentProfile.getProfilePictureUri(300,300).toString(),"0","0","1");
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
     }
 
@@ -368,5 +371,21 @@ public class LoginActivity extends AppCompatActivity {
             tracker.stopTracking();
             profileTracker.stopTracking();
         }
+    }
+
+    public void savetosqlite(String name,String email,String phone,String photo,String cloud,String google,String facebook)
+    {
+        ProfileProviderHelper helper=new ProfileProviderHelper(LoginActivity.this);
+        ContentValues args = new ContentValues();
+        args.put(NAME, name);
+        args.put(EMAIL, email);
+        args.put(PHONENO,phone);
+        args.put(IMAGE,photo);
+        args.put(CLOUD,cloud);
+        args.put(GOOGLE,google);
+        args.put(FACEBOOK,facebook);
+        helper.insert(args);
+        helper.getContacts();
+
     }
 }

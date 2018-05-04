@@ -7,17 +7,6 @@ public class UserSharedPreference {
 
     private SharedPreferences preferences;
     private  SharedPreferences.Editor editor;
-    private boolean first_time_open;
-
-    private String name;
-    private String email;
-    private String phoneno;
-    private boolean custom;
-    private boolean savetocloud;
-    private String loginemail;
-    private boolean googlesign;
-    private String photourl;
-    private boolean facebooksign;
 
     public boolean isGooglesign() {
         return preferences.getBoolean("googlesign",false);
@@ -48,7 +37,7 @@ public class UserSharedPreference {
 
     public UserSharedPreference(Context context)
     {
-        preferences=context.getSharedPreferences("user",0);
+        preferences=context.getSharedPreferences("user",Context.MODE_PRIVATE);
         editor=preferences.edit();
     }
 
@@ -113,6 +102,17 @@ public class UserSharedPreference {
     public void setSavetocloud(boolean savetocloud) {
         editor.putBoolean("save_to_cloud",savetocloud);
         editor.commit();
+    }
+
+    public void setsqlitedatabase(boolean sqlite)
+    {
+        editor.putBoolean("savesqlite",sqlite);
+        editor.commit();
+    }
+
+    public boolean getsqlitedatabase()
+    {
+        return preferences.getBoolean("savesqlite",false);
     }
 
 }

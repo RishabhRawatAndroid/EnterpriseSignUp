@@ -32,6 +32,7 @@ import com.myapp.risha.totalitycorporation.Classes.ProfileProviderHelper;
 import com.myapp.risha.totalitycorporation.R;
 import com.myapp.risha.totalitycorporation.storage.ProfileProvider;
 import com.myapp.risha.totalitycorporation.storage.UserSharedPreference;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -158,7 +159,19 @@ public class MainActivity extends AppCompatActivity {
         else if(preference.isGooglesign())
         {
             Log.d(TAG,"Fourth IF ELSE");
-            Picasso.get().load(preference.getPhotourl()).error(R.drawable.ggoogle).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage);
+            //loading image from the url
+            Picasso.get().load(preference.getPhotourl()).error(R.drawable.ggoogle).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+
+                    Snackbar.make(layout,"No internet connection :<",Snackbar.LENGTH_LONG).show();
+                }
+            });
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());
 
@@ -166,7 +179,18 @@ public class MainActivity extends AppCompatActivity {
         else if(preference.isFacebooksign())
         {
             Log.d(TAG,"FIfth IF ELSE");
-            Picasso.get().load(preference.getPhotourl()).error(R.drawable.com_facebook_favicon_blue).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage);
+            //loading image from the url
+            Picasso.get().load(preference.getPhotourl()).error(R.drawable.com_facebook_favicon_blue).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileimage, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Snackbar.make(layout, "No internet Connection :<", Snackbar.LENGTH_LONG).show();
+                }
+            });
             Log.d(TAG,preference.getPhotourl());
             profilename.setText(preference.getName());
             profilemail.setText(preference.getEmail());

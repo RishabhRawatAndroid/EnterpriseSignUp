@@ -100,18 +100,18 @@ public class SplashScreen extends AppCompatActivity {
     {
             if(!userSharedPrefrence.isFirst_time_open())
             {
-                Log.d(TAG,"Enter in sharedpreference");
-                if(isOnline())
-                {
+              //  Log.d(TAG,"Enter in sharedpreference");
+              //  if(isOnline())
+              //  {
                     Log.d(TAG,"APP is online");
                     delay();
-                }
-                else
-                {
-                    Log.d(TAG,"App is not online");
-                    progressBar.setVisibility(View.INVISIBLE);
-                    Snackbar.make(layout,"No Internet Connection Available :(",Snackbar.LENGTH_INDEFINITE).setAction(R.string.setting,new OpenSetting()).setActionTextColor(Color.RED).show();
-                }
+             //   }
+             //   else
+             //   {
+             //       Log.d(TAG,"App is not online");
+             //       progressBar.setVisibility(View.INVISIBLE);
+             //       Snackbar.make(layout,"No Internet Connection Available :(",Snackbar.LENGTH_INDEFINITE).setAction(R.string.setting,new OpenSetting()).setActionTextColor(Color.RED).show();
+             //   }
             }
             else
             {
